@@ -1,0 +1,33 @@
+trigger:
+- main
+
+pr:
+- '*'
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+jobs:
+- job: DeployToVM
+  steps:
+  - checkout: self
+
+  - task: CopyFiles@2
+    inputs:
+      sourceFolder: '$(Build.SourcesDirectory)'
+      contents: '**'
+      targetFolder: '$(Build.ArtifactStagingDirectory)'
+
+  - task: PublishPipelineArtifact@1
+    inputs:
+      targetPath: '$(Build.ArtifactStagingDirectory)'
+      artifactName: 'webcontent'
+
+  - task: SSH@0
+    inputs:
+      sshEndpoint: 'your_ssh_service_connection'
+      runOptions: 'inline'
+      inline: |
+        cd /path/to/your/repo
+        chmod +x deploy_script.sh
+        ./deploy_script.sh
