@@ -25,9 +25,9 @@ jobs:
 
   - task: SSH@0
     inputs:
-      sshEndpoint: 'your_ssh_service_connection'
+      sshEndpoint: 'mytest'
       runOptions: 'inline'
       inline: |
-        cd /path/to/your/repo
+        cd Nginx/*
         chmod +x deploy_script.sh
         ./deploy_script.sh
