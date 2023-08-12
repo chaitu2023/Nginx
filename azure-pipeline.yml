@@ -1,4 +1,3 @@
-
 trigger:
 - main
 
@@ -39,8 +38,9 @@ jobs:
       sshEndpoint: 'mytest'
       runOptions: 'inline'
       inline: |
-        cd $(Build.ArtifactStagingDirectory)/Nginx
-        chmod +x deploy_script.sh
-        ./deploy_script.sh
+        sudo apt-get update
+        sudo apt-get install nginx -y
+        sudo cp $(Build.ArtifactStagingDirectory)/Nginx/index.html /var/www/html/
+        sudo systemctl restart nginx.service
       sshDebugEnabled: true
     displayName: 'Deploy HTML to VM'
