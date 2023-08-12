@@ -29,9 +29,9 @@ jobs:
 
   - task: CopyFiles@2
     inputs:
-      SourceFolder: $(Build.SourcesDirectory)
+      SourceFolder: $(Build.SourcesDirectory)/Nginx
       Contents: '**'
-      TargetFolder: $(Build.ArtifactStagingDirectory)
+      TargetFolder: $(Build.ArtifactStagingDirectory)/Nginx
 
   - task: SSH@0
     inputs:
