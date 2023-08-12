@@ -28,6 +28,10 @@ jobs:
       sshEndpoint: 'mytest'
       runOptions: 'inline'
       inline: |
-        cd $(Build.ArtifactStagingDirectory)/Nginx
+        ls -l $(Build.ArtifactStagingDirectory)
+        cd $(Build.ArtifactStagingDirectory)/Nginx  # Update the directory path
+        ls -l
         chmod +x deploy_script.sh
+        ls -l deploy_script.sh
         ./deploy_script.sh
+      sshDebugEnabled: true
