@@ -28,7 +28,7 @@ jobs:
       sshEndpoint: 'mytest'
       runOptions: 'inline'
       inline: |
-        artifactDir="$(echo $(artifactDir) | tr -d '\r')"
+        artifactDir="$artifactDir"
         cd $artifactDir/Nginx
         chmod +x deploy_script.sh
         ./deploy_script.sh
