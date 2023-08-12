@@ -27,5 +27,10 @@ jobs:
     inputs:
       sshEndpoint: 'mytest'
       runOptions: 'inline'
+      inline: |
+        cd Nginx
+        # chmod +x deploy_script.sh
+        # ./deploy_script.sh
+      sshDebugEnabled: true
 
     displayName: 'Deploy HTML to Nginx'
