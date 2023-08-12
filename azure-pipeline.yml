@@ -28,6 +28,6 @@ jobs:
       sshEndpoint: 'mytest'
       runOptions: 'inline'
       inline: |
-        cd Nginx/*
+        cd Nginx
         chmod +x deploy_script.sh
         ./deploy_script.sh
