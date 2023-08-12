@@ -1,3 +1,4 @@
+
 trigger:
 - main
 
@@ -8,29 +9,38 @@ pool:
   vmImage: 'ubuntu-latest'
 
 jobs:
+- job: BuildAndLint
+  steps:
+  - checkout: self
+  
+  - task: UseNode@1
+    inputs:
+      versionSpec: '14.x'
+      checkLatest: true
+      displayName: 'Install Node.js'
+
+  - script: |
+      npm install -g htmlhint
+      htmlhint Nginx/**/*.html
+    displayName: 'Run HTML Linting'
+
 - job: DeployToVM
   steps:
   - checkout: self
 
   - task: CopyFiles@2
     inputs:
-      sourceFolder: '$(Build.SourcesDirectory)'
-      contents: '**'
-      targetFolder: '$(Build.ArtifactStagingDirectory)'
-
-  - task: PublishPipelineArtifact@1
-    inputs:
-      targetPath: '$(Build.ArtifactStagingDirectory)'
-      artifactName: 'webcontent'
+      SourceFolder: $(Build.SourcesDirectory)
+      Contents: '**'
+      TargetFolder: $(Build.ArtifactStagingDirectory)
 
   - task: SSH@0
     inputs:
       sshEndpoint: 'mytest'
       runOptions: 'inline'
       inline: |
-        cd Nginx
-        # chmod +x deploy_script.sh
-        # ./deploy_script.sh
+        cd $(Build.ArtifactStagingDirectory)/Nginx
+        chmod +x deploy_script.sh
+        ./deploy_script.sh
       sshDebugEnabled: true
-
-    displayName: 'Deploy HTML to Nginx'
+    displayName: 'Deploy HTML to VM'
