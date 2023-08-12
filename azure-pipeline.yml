@@ -28,10 +28,10 @@ jobs:
       sshEndpoint: 'mytest'
       runOptions: 'inline'
       inline: |
-        ls -l $(Build.ArtifactStagingDirectory)
-        cd $(Build.ArtifactStagingDirectory)/Nginx  # Update the directory path
-        ls -l
+        artifactDir="$(echo $(artifactDir) | tr -d '\r')"
+        cd $artifactDir/Nginx
         chmod +x deploy_script.sh
-        ls -l deploy_script.sh
         ./deploy_script.sh
       sshDebugEnabled: true
+      failOnStdErr: true
+      arguments: '-artifactDir "$(Build.ArtifactStagingDirectory)"'
