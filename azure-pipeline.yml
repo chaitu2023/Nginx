@@ -28,7 +28,7 @@ jobs:
       sshEndpoint: 'mytest'
       runOptions: 'inline'
       inline: |
-        cd $(Pipeline.Workspace)/Nginx
+        cd Nginx
         chmod +x deploy_script.sh
         ./deploy_script.sh
       sshDebugEnabled: true
