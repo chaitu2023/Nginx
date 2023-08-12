@@ -30,7 +30,7 @@ jobs:
   - task: CopyFiles@2
     inputs:
       SourceFolder: '$(Build.SourcesDirectory)'
-      Contents: 'Nginx/**' # Adjust the pattern to match your files
+      Contents: '**/*'
       TargetFolder: $(Build.ArtifactStagingDirectory)
 
   - task: SSH@0
