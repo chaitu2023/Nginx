@@ -32,6 +32,10 @@ jobs:
       SourceFolder: '$(Build.SourcesDirectory)'
       Contents: '**/*'
       TargetFolder: $(Build.ArtifactStagingDirectory)
+  - script: |
+    ls $(Build.SourcesDirectory)/Nginx
+  displayName: 'List Contents of Nginx Directory'
+
 
   - task: SSH@0
     inputs:
