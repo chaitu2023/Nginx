@@ -1,5 +1,5 @@
 trigger:
-- main
+- main  # Adjust this to your desired branch
 
 pr:
 - '*'
@@ -8,43 +8,63 @@ pool:
   vmImage: 'ubuntu-latest'
 
 jobs:
-- job: BuildAndLint
-  steps:
-  - checkout: self
-  
-  - task: UseNode@1
-    inputs:
-      versionSpec: '14.x'
-      checkLatest: true
-      displayName: 'Install Node.js'
-
-  - script: |
-      npm install -g htmlhint
-      htmlhint Nginx/**/*.html
-    displayName: 'Run HTML Linting'
-
 - job: DeployToVM
   steps:
-  - checkout: self
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '14.x'
+    displayName: 'Install Node.js'
 
+  - script: npm install
+    displayName: 'Install Dependencies'
+  
+  - script: npx htmlhint index.html
+    displayName: 'Lint HTML File'
+
+  - script: echo 'Running tests...'
+    displayName: 'Run Tests'
+    
   - task: CopyFiles@2
     inputs:
-      SourceFolder: '$(Build.SourcesDirectory)'
-      Contents: '**/*'
-      TargetFolder: $(Build.ArtifactStagingDirectory)
-  - script: |
-    ls $(Build.SourcesDirectory)/Nginx
-  displayName: 'List Contents of Nginx Directory'
+      sourceFolder: './'
+      contents: '**/*'
+      targetFolder: '$(Build.ArtifactStagingDirectory)/html'
 
+  - task: PublishBuildArtifacts@1
+    inputs:
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)/html'
+      ArtifactName: 'html'
+      publishLocation: 'Container'
+  - task: DownloadPipelineArtifact@2
+    inputs:
+      artifact: 'html'  # Replace with your artifact name
+      path: $(System.ArtifactsDirectory)
 
-  - task: SSH@0
+  - task: CopyFilesOverSSH@0
     inputs:
       sshEndpoint: 'mytest'
+      sourceFolder: '$(System.ArtifactsDirectory)/html'
+      contents: '**/*.html'
+      targetFolder: '/home/azure/'
+  - task: SSH@0
+    inputs:
+      sshEndpoint: 'mytest'  # Replace with your SSH service connection name
       runOptions: 'inline'
-      inline: |
-        sudo apt-get update
-        sudo apt-get install nginx -y
-        sudo cp $(Build.ArtifactStagingDirectory)/Nginx/index.html /var/www/html/
-        sudo systemctl restart nginx.service
-      sshDebugEnabled: true
-    displayName: 'Deploy HTML to VM'
+      inline: 'sudo mv /home/azure/index.html /var/www/html/ && sudo systemctl restart nginx'
+- job: RuntimeTest
+  dependsOn: DeployToVM
+  steps:
+  - script: |
+      # Run your runtime tests here (e.g., using curl, wget, or a testing framework)
+      # For example, testing if the deployed page is accessible
+      response=$(curl -s -o /dev/null -w "%{http_code}" http://your-vm-ip/)
+      if [ "$response" -eq "200" ]; then
+        echo "Runtime test passed! Page is accessible."
+        exit 0
+      else
+        echo "Runtime test failed! Page returned HTTP status $response."
+        exit 1
+      fi
+    displayName: 'Run Runtime Test'
+Copy and paste this entire script into your Azure DevOps pipeline YAML file. Make sure to replace http://your-vm-ip/ with the actual URL or IP address of your deployed page. Adjust the error handling and HTTP status codes in the runtime test script as needed. This script should define two jobs: "DeployToVM" for deploying the website and "RuntimeTest" for testing the runtime behavior of the deployed page.
+
