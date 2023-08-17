@@ -57,6 +57,7 @@ jobs:
   - script: |
       # Run your runtime tests here (e.g., using curl, wget, or a testing framework)
       # For example, testing if the deployed page is accessible
+      python -m pip install requests
       response=$(curl -s -o /dev/null -w "%{http_code}" http://20.55.105.192/)
       if [ "$response" -eq "200" ]; then
         echo "Runtime test passed! Page is accessible."
