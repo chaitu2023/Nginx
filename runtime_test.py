@@ -1,29 +1,40 @@
-import requests
+from selenium import webdriver
 
 def main():
-    base_url = "http://20.55.105.192/"  # Replace with your Azure VM's URL or IP address
-
-    # Simulate a login attempt
-    login_data = {
-        "username": "your_username",
-        "password": "your_password"
-    }
-
-    session = requests.Session()
+    # Set up the Selenium WebDriver
+    driver = webdriver.Chrome()  # Use the appropriate WebDriver for your browser
 
     try:
-        # Perform the login
-        login_response = session.post(base_url + "login", data=login_data)
-        login_response.raise_for_status()  # Raise an exception for HTTP errors
+        # Open the login page
+        driver.get("http://your-vm-ip/login")  # Replace with your VM's URL
 
-        # Check if login was successful
-        if "Welcome" in login_response.text:
+        # Find the username and password fields, and login button
+        username_field = driver.find_element_by_id("username")
+        password_field = driver.find_element_by_id("password")
+        login_button = driver.find_element_by_xpath("//input[@type='submit']")
+
+        # Enter login credentials
+        username_field.send_keys("testuser")
+        password_field.send_keys("test@123")
+
+        # Click the login button
+        login_button.click()
+
+        # Wait for the page to load
+        driver.implicitly_wait(10)
+
+        # Check if "Welcome" is present in the page source
+        if "Welcome" in driver.page_source:
             print("Login successful!")
         else:
             print("Login failed!")
 
-    except requests.exceptions.RequestException as e:
+    except Exception as e:
         print("An error occurred:", e)
+
+    finally:
+        # Close the browser
+        driver.quit()
 
 if __name__ == "__main__":
     main()
