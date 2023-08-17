@@ -6,7 +6,7 @@ def main():
 
     try:
         # Open the login page
-        driver.get("http://your-vm-ip/login")  # Replace with your VM's URL
+        driver.get("http://20.55.105.192/")  # Replace with your VM's URL
 
         # Find the username and password fields, and login button
         username_field = driver.find_element_by_id("username")
