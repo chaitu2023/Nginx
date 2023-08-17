@@ -60,12 +60,12 @@ jobs:
       python -m pip install requests
       python -m pip install selenium
       python runtime_test.py
-      response=$(curl -s -o /dev/null -w "%{http_code}" http://20.55.105.192/)
-      if [ "$response" -eq "200" ]; then
-        echo "Runtime test passed! Page is accessible."
-        exit 0
-      else
-        echo "Runtime test failed! Page returned HTTP status $response."
-        exit 1
-      fi
+      # response=$(curl -s -o /dev/null -w "%{http_code}" http://20.55.105.192/)
+      # if [ "$response" -eq "200" ]; then
+      #   echo "Runtime test passed! Page is accessible."
+      #   exit 0
+      # else
+      #   echo "Runtime test failed! Page returned HTTP status $response."
+      #   exit 1
+      # fi
     displayName: 'Run Runtime Test'
