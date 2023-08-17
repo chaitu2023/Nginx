@@ -57,7 +57,7 @@ jobs:
   - script: |
       # Run your runtime tests here (e.g., using curl, wget, or a testing framework)
       # For example, testing if the deployed page is accessible
-      response=$(curl -s -o /dev/null -w "%{http_code}" http://your-vm-ip/)
+      response=$(curl -s -o /dev/null -w "%{http_code}" http://20.55.105.192/)
       if [ "$response" -eq "200" ]; then
         echo "Runtime test passed! Page is accessible."
         exit 0
@@ -66,5 +66,3 @@ jobs:
         exit 1
       fi
     displayName: 'Run Runtime Test'
-Copy and paste this entire script into your Azure DevOps pipeline YAML file. Make sure to replace http://your-vm-ip/ with the actual URL or IP address of your deployed page. Adjust the error handling and HTTP status codes in the runtime test script as needed. This script should define two jobs: "DeployToVM" for deploying the website and "RuntimeTest" for testing the runtime behavior of the deployed page.
-
