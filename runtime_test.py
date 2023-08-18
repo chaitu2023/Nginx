@@ -1,19 +1,17 @@
 from selenium import webdriver
 
 def main():
-    # Set up the Selenium WebDriver with options
-    options = webdriver.ChromeOptions()
-    options.add_argument('--headless')  # Use this if you're running headless
-    options.binary_location = '/usr/bin/google-chrome'  # Actual path to Chrome binary
-    driver = webdriver.Chrome(options=options)
+    # Set up the Selenium WebDriver
+    driver = webdriver.Chrome()  # Use the appropriate WebDriver for your browser
+
     try:
         # Open the login page
-        driver.get("http://20.55.105.192/")  # Replace with your VM's URL
+        driver.get("20.55.105.192/")  # Replace with your VM's URL
 
         # Find the username and password fields, and login button
-        username_field = driver.find_element_by_id("username")
-        password_field = driver.find_element_by_id("password")
-        login_button = driver.find_element_by_xpath("//input[@type='submit']")
+        username_field = driver.find_element("name", "username")  # Find by name attribute
+        password_field = driver.find_element("name", "password")  # Find by name attribute
+        login_button = driver.find_element("xpath", "//input[@type='submit']")  # Find using XPath
 
         # Enter login credentials
         username_field.send_keys("testuser")
