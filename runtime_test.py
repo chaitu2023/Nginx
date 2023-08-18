@@ -4,7 +4,8 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 # Set up the WebDriver (make sure chromedriver.exe is in the same directory)
-driver = webdriver.Chrome()
+# driver = webdriver.Chrome()
+driver = webdriver.Chrome(executable_path='/usr/bin/google-chrome')
 
 # Open the login page
 driver.get("http://20.55.105.192/")
