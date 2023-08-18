@@ -5,7 +5,7 @@
 </head>
 <body>
     <h2>Login</h2>
-    <form id="loginForm" action="/login" method="post">
+    <form id="loginForm" action="javascript:void(0);" onsubmit="login();">
         <label for="username">Username:</label>
         <input type="text" id="username" name="username" required><br><br>
 
@@ -21,17 +21,17 @@
     </div>
 
     <script>
-        // JavaScript to show welcome message after successful login
-        document.getElementById('loginForm').addEventListener('submit', function (event) {
+        function login() {
             event.preventDefault(); // Prevent form submission
 
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
 
             if (username === 'testuser' && password === 'test@123') {
+                document.getElementById('loginForm').style.display = 'none';
                 document.getElementById('welcomeMessage').style.display = 'block';
             }
-        });
+        }
     </script>
 </body>
 </html>
