@@ -4,8 +4,8 @@ def main():
     # Set up the Selenium WebDriver with options
     options = webdriver.ChromeOptions()
     options.add_argument('--headless')  # Use this if you're running headless
-    driver = webdriver.Chrome(executable_path='/usr/local/bin/chromedriver', options=options)  # Replace with actual path
-
+    options.binary_location = '/usr/bin/google-chrome'  # Actual path to Chrome binary
+    driver = webdriver.Chrome(options=options)
     try:
         # Open the login page
         driver.get("http://20.55.105.192/")  # Replace with your VM's URL
