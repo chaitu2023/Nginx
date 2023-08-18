@@ -1,3 +1,4 @@
+html
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,12 +8,31 @@
     <h2>Login</h2>
     <form action="/login" method="post">
         <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required value="testuser"><br><br>
+        <input type="text" id="username" name="username" required><br><br>
 
         <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required value="test@123"><br><br>
+        <input type="password" id="password" name="password" required><br><br>
 
         <input type="submit" value="Login">
     </form>
+
+    <!-- Display welcome message if logged in -->
+    <div id="welcomeMessage" style="display: none;">
+        <h3>Welcome to the Test Server</h3>
+    </div>
+
+    <script>
+        // JavaScript to show welcome message after successful login
+        document.querySelector('form').addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevent form submission
+
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            if (username === 'testuser' && password === 'test@123') {
+                document.getElementById('welcomeMessage').style.display = 'block';
+            }
+        });
+    </script>
 </body>
 </html>
