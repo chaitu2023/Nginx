@@ -1,11 +1,23 @@
 from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 
-# Set up the WebDriver (make sure chromedriver.exe is in the same directory)
-# driver = webdriver.Chrome()
-driver = webdriver.Chrome(executable_path='/usr/bin/google-chrome')
+def main():
+    # Set up the Selenium WebDriver with options
+    options = webdriver.ChromeOptions()
+    options.add_argument('--headless')  # Use this if you're running headless
+    options.binary_location = '/usr/bin/google-chrome'  # Actual path to Chrome binary
+    driver = webdriver.Chrome(options=options)
+    try:
+
+
+# from selenium import webdriver
+# from selenium.webdriver.common.by import By
+# from selenium.webdriver.support.ui import WebDriverWait
+# from selenium.webdriver.support import expected_conditions as EC
+
+# # Set up the WebDriver (make sure chromedriver.exe is in the same directory)
+# # driver = webdriver.Chrome()
+# driver = webdriver.Chrome(executable_path='/usr/bin/google-chrome')
+
 
 # Open the login page
 driver.get("http://20.55.105.192/")
