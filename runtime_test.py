@@ -1,42 +1,39 @@
 from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
-def main():
-    # Set up the Selenium WebDriver with options
-    options = webdriver.ChromeOptions()
-    options.add_argument('--headless')  # Use this if you're running headless
-    options.binary_location = '/usr/bin/google-chrome'  # Actual path to Chrome binary
-    driver = webdriver.Chrome(options=options)
-    try:
-        # Open the login page
-        driver.get("http://20.55.105.192/")  # Replace with your VM's URL
+# Set up the WebDriver (make sure chromedriver.exe is in the same directory)
+driver = webdriver.Chrome()
 
-        # Find the username and password fields, and login button
-        username_field = driver.find_element_by_id("username")
-        password_field = driver.find_element_by_id("password")
-        login_button = driver.find_element_by_xpath("//input[@type='submit']")
+# Open the login page
+driver.get("http://20.55.105.192/")
 
-        # Enter login credentials
-        username_field.send_keys("testuser")
-        password_field.send_keys("test@123")
+username_field = WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.NAME, "username")))
+username_field.send_keys("testuser")
+password_field = WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.NAME, "password")))
+password_field.send_keys("test@123")
+# Find and input username and password
+# username_field = driver.find_element_by_name("username")
+# password_field = driver.find_element_by_name("password")
+# username_field.send_keys("testuser")
+# password_field.send_keys("test@123")
 
-        # Click the login button
-        login_button.click()
+login_button = driver.find_element(By.CSS_SELECTOR, 'input[type="submit"][value="Login"]')
+login_button.click()
 
-        # Wait for the page to load
-        driver.implicitly_wait(10)
+# Wait for the welcome message element to appear
+welcome_message_element = driver.find_element(By.ID, "welcomeMessage")
 
-        # Check if "Welcome" is present in the page source
-        if "Welcome" in driver.page_source:
-            print("Login successful!")
-        else:
-            print("Login failed!")
+# Get the text content of the welcome message
+welcome_message_text = welcome_message_element.find_element(By.TAG_NAME, "h3").text
 
-    except Exception as e:
-        print("An error occurred:", e)
+# Verify the welcome message
+expected_welcome_message = "Welcome to the Test Server"
+if welcome_message_text != expected_welcome_message:
+    print(f"Test failed! Expected: '{expected_welcome_message}', Actual: '{welcome_message_text}'")
+else:
+    print("Test passed!")
 
-    finally:
-        # Close the browser
-        driver.quit()
-
-if __name__ == "__main__":
-    main()
+# Close the browser
+driver.quit()
