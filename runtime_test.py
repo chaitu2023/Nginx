@@ -29,7 +29,7 @@ def main():
         welcome_message_text = welcome_message_element.find_element(By.TAG_NAME, "h3").text
 
         # Verify the welcome message
-        expected_welcome_message = "Welcome to the Test Server & Sample"
+        expected_welcome_message = "Welcome to the Test Server"
         if welcome_message_text != expected_welcome_message:
             print(f"Test failed! Expected: '{expected_welcome_message}', Actual: '{welcome_message_text}'")
         else:
