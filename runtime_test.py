@@ -14,7 +14,7 @@ def main():
         driver.get("http://20.55.105.192/")
 
         username_field = WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.NAME, "username")))
-        username_field.send_keys("testuser")
+        username_field.send_keys("testuse")
         password_field = WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.NAME, "password")))
         password_field.send_keys("test@123")
         
